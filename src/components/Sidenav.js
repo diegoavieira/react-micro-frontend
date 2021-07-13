@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { makeStyles, Drawer } from '@material-ui/core';
+import { makeStyles, Drawer, List } from '@material-ui/core';
+import SidenavItem from './SidenavItem';
 
 const useStyles = makeStyles((theme) => ({
   drawer: {
@@ -23,8 +24,6 @@ const Sidenav = (props) => {
     setDrawerVariant(isMobile ? 'temporary' : 'persistent');
   });
 
-  console.log(items);
-
   return (
     <nav>
       <Drawer
@@ -33,7 +32,13 @@ const Sidenav = (props) => {
         open={drawerOpen}
         onClose={toogleDrawer}
         classes={{ paper: classes.drawerPaper }}
-      />
+      >
+        <List>
+          {items.map((item) => (
+            <SidenavItem key={item.name} item={item} />
+          ))}
+        </List>
+      </Drawer>
     </nav>
   );
 };

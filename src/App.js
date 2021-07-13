@@ -7,6 +7,7 @@ import Layout from './components/Layout';
 const theme = createTheme({
   palette: {
     primary: purple
+    // type: 'dark'
   }
 });
 

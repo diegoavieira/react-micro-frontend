@@ -37,7 +37,32 @@ const useStyles = makeStyles((theme) => ({
 
 const sidenavItems = [
   {
-    name: 'Test'
+    name: 'Home',
+    path: '/'
+  },
+  {
+    name: 'Create',
+    path: '/create'
+  },
+  {
+    name: 'Children',
+    path: '/children',
+    children: [
+      {
+        name: 'Child',
+        path: '/child'
+      }
+    ]
+  },
+  {
+    name: 'Children 2',
+    path: '/children2',
+    children: [
+      {
+        name: 'Child 2',
+        path: '/child2'
+      }
+    ]
   }
 ];
 
