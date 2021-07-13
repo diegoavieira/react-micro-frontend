@@ -1,15 +1,6 @@
-import {
-  Drawer,
-  makeStyles,
-  Typography,
-  useTheme,
-  useMediaQuery,
-  AppBar,
-  Toolbar,
-  IconButton
-} from '@material-ui/core';
-import MenuIcon from '@material-ui/icons/Menu';
+import { Drawer, makeStyles, Typography, useTheme, useMediaQuery } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
+import TopToolbar from './TopToolbar';
 
 const drawerWidth = 280;
 
@@ -50,12 +41,6 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('sm')]: {
       top: 0
     }
-  },
-  menuButton: {
-    marginRight: theme.spacing(2)
-  },
-  toolbarTitle: {
-    flexGrow: 1
   }
 }));
 
@@ -80,16 +65,7 @@ const Layout = ({ children }) => {
 
   return (
     <>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton edge="start" className={classes.menuButton} color="inherit" onClick={toogleDrawer}>
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" className={classes.toolbarTitle}>
-            News
-          </Typography>
-        </Toolbar>
-      </AppBar>
+      <TopToolbar toogleDrawer={toogleDrawer} />
       <main className={classes.main}>
         <nav>
           <Drawer
