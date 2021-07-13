@@ -1,5 +1,6 @@
-import { Drawer, makeStyles, Typography, useTheme, useMediaQuery } from '@material-ui/core';
-import React, { useEffect, useState } from 'react';
+import { makeStyles, useTheme, useMediaQuery } from '@material-ui/core';
+import React, { useState, useEffect } from 'react';
+import Sidenav from './Sidenav';
 import TopToolbar from './TopToolbar';
 
 const drawerWidth = 280;
@@ -31,33 +32,24 @@ const useStyles = makeStyles((theme) => ({
       }),
       marginLeft: -drawerWidth
     }
-  },
-  drawer: {
-    width: drawerWidth
-  },
-  drawerPaper: {
-    width: drawerWidth,
-    top: 64,
-    [theme.breakpoints.down('sm')]: {
-      top: 0
-    }
   }
 }));
+
+const sidenavItems = [
+  {
+    name: 'Test'
+  }
+];
 
 const Layout = ({ children }) => {
   const classes = useStyles();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const [drawerVariant, setDrawerVariant] = useState('persistent');
   const [drawerOpen, setDrawerOpen] = useState(true);
 
   const toogleDrawer = () => {
     setDrawerOpen(!drawerOpen);
   };
-
-  useEffect(() => {
-    setDrawerVariant(isMobile ? 'temporary' : 'persistent');
-  });
 
   useEffect(() => {
     setDrawerOpen(!isMobile);
@@ -67,19 +59,13 @@ const Layout = ({ children }) => {
     <>
       <TopToolbar toogleDrawer={toogleDrawer} />
       <main className={classes.main}>
-        <nav>
-          <Drawer
-            className={classes.drawer}
-            variant={drawerVariant}
-            open={drawerOpen}
-            onClose={toogleDrawer}
-            classes={{ paper: classes.drawerPaper }}
-          >
-            <div>
-              <Typography variant="h5">Test Drawer</Typography>
-            </div>
-          </Drawer>
-        </nav>
+        <Sidenav
+          items={sidenavItems}
+          drawerOpen={drawerOpen}
+          isMobile={isMobile}
+          toogleDrawer={toogleDrawer}
+          drawerWidth={drawerWidth}
+        />
         <section className={`${classes.section} ${!isMobile && !drawerOpen && 'drawer-closed'}`}>{children}</section>
       </main>
     </>
