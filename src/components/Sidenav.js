@@ -33,7 +33,7 @@ const Sidenav = (props) => {
         onClose={toogleDrawer}
         classes={{ paper: classes.drawerPaper }}
       >
-        <List>
+        <List disablePadding>
           {items.map((item) => (
             <SidenavItem key={item.name} item={item} />
           ))}

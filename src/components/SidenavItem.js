@@ -1,10 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { makeStyles, ListItem, ListItemText, Collapse, List } from '@material-ui/core';
+import React, { useState } from 'react';
+import { makeStyles, ListItem, ListItemText, Collapse, List, useTheme } from '@material-ui/core';
 import { useHistory, useLocation } from 'react-router-dom';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 const useStyles = makeStyles((theme) => ({
+  primary: {
+    color: theme.palette.text.secondary,
+    '&.selected': {
+      color: theme.palette.primary.main
+    }
+  },
   itemChild: {
     paddingLeft: theme.spacing(2)
   }
@@ -12,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
 
 const SidenavItem = ({ item, child }) => {
   const classes = useStyles();
+  const theme = useTheme();
   const history = useHistory();
   const location = useLocation();
 
@@ -33,8 +40,12 @@ const SidenavItem = ({ item, child }) => {
     }
   };
 
-  const expandIconChild = ({ children }) =>
-    isChildItem(children) && (openChild ? <ExpandLessIcon /> : <ExpandMoreIcon />);
+  const expandIconChild = ({ children }) => {
+    const color = isSelected || hasChildItemSelected ? theme.palette.primary.main : theme.palette.text.secondary;
+    return (
+      isChildItem(children) && (openChild ? <ExpandLessIcon style={{ color }} /> : <ExpandMoreIcon style={{ color }} />)
+    );
+  };
 
   const collapseList = ({ children }) =>
     isChildItem(children) && (
@@ -47,16 +58,15 @@ const SidenavItem = ({ item, child }) => {
       </Collapse>
     );
 
-  useEffect(() => {
-    if (isChildItem(item.children) && !hasChildItemSelected && isSelected) {
-      console.log(item);
-    }
-  });
-
   return (
     <>
-      <ListItem button onClick={() => onClickItem(item)} selected={isSelected || hasChildItemSelected}>
-        <ListItemText primary={item.name} className={child && classes.itemChild} />
+      <ListItem button onClick={() => onClickItem(item)}>
+        <ListItemText
+          primary={item.name}
+          className={`${child && classes.itemChild} ${classes.primary} ${
+            (isSelected || hasChildItemSelected) && 'selected'
+          }`}
+        />
         {expandIconChild(item)}
       </ListItem>
       {collapseList(item)}
