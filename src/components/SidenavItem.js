@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles, ListItem, ListItemText, Collapse, List } from '@material-ui/core';
 import { useHistory, useLocation } from 'react-router-dom';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
@@ -14,9 +14,16 @@ const SidenavItem = ({ item, child }) => {
   const classes = useStyles();
   const history = useHistory();
   const location = useLocation();
-  const [openChild, setOpenChild] = useState(false);
 
   const isChildItem = (children) => children && children.length;
+
+  const hasChildItemSelected = !!(
+    isChildItem(item.children) && item.children.filter((itemChild) => itemChild.path === location.pathname).length
+  );
+
+  const isSelected = item.path === location.pathname;
+
+  const [openChild, setOpenChild] = useState(hasChildItemSelected);
 
   const onClickItem = ({ children, path }) => {
     if (isChildItem(children)) {
@@ -40,9 +47,15 @@ const SidenavItem = ({ item, child }) => {
       </Collapse>
     );
 
+  useEffect(() => {
+    if (isChildItem(item.children) && !hasChildItemSelected && isSelected) {
+      console.log(item);
+    }
+  });
+
   return (
     <>
-      <ListItem button onClick={() => onClickItem(item)} selected={location.pathname === item.path}>
+      <ListItem button onClick={() => onClickItem(item)} selected={isSelected || hasChildItemSelected}>
         <ListItemText primary={item.name} className={child && classes.itemChild} />
         {expandIconChild(item)}
       </ListItem>

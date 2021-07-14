@@ -61,6 +61,10 @@ const sidenavItems = [
       {
         name: 'Child 2',
         path: '/child2'
+      },
+      {
+        name: 'Child 3',
+        path: '/child3'
       }
     ]
   }
