@@ -11,48 +11,48 @@ const useStyles = makeStyles((theme) => ({
       color: theme.palette.primary.main
     }
   },
-  itemChild: {
+  subitem: {
     paddingLeft: theme.spacing(2)
   }
 }));
 
-const SidenavItem = ({ item, child }) => {
+const SidenavItem = ({ item, isSubitem }) => {
   const classes = useStyles();
   const theme = useTheme();
   const history = useHistory();
   const location = useLocation();
 
-  const isChildItem = (children) => children && children.length;
+  const hasSubitems = (subitems) => subitems && subitems.length;
 
   const hasChildItemSelected = !!(
-    isChildItem(item.children) && item.children.filter((itemChild) => itemChild.path === location.pathname).length
+    hasSubitems(item.subitems) && item.subitems.filter((subitem) => subitem.path === location.pathname).length
   );
 
   const isSelected = item.path === location.pathname;
 
-  const [openChild, setOpenChild] = useState(hasChildItemSelected);
+  const [openItem, setOpenItem] = useState(hasChildItemSelected);
 
-  const onClickItem = ({ children, path }) => {
-    if (isChildItem(children)) {
-      setOpenChild(!openChild);
+  const onClickItem = ({ subitems, path }) => {
+    if (hasSubitems(subitems)) {
+      setOpenItem(!openItem);
     } else {
       history.push(path);
     }
   };
 
-  const expandIconChild = ({ children }) => {
+  const expandIcon = ({ subitems }) => {
     const color = isSelected || hasChildItemSelected ? theme.palette.primary.main : theme.palette.text.secondary;
     return (
-      isChildItem(children) && (openChild ? <ExpandLessIcon style={{ color }} /> : <ExpandMoreIcon style={{ color }} />)
+      hasSubitems(subitems) && (openItem ? <ExpandLessIcon style={{ color }} /> : <ExpandMoreIcon style={{ color }} />)
     );
   };
 
-  const collapseList = ({ children }) =>
-    isChildItem(children) && (
-      <Collapse in={openChild} timeout="auto" unmountOnExit>
+  const collapseList = ({ subitems }) =>
+    hasSubitems(subitems) && (
+      <Collapse in={openItem} timeout="auto" unmountOnExit>
         <List disablePadding>
-          {children.map((childItem) => (
-            <SidenavItem child key={childItem.name} item={childItem} />
+          {subitems.map((subitem) => (
+            <SidenavItem isSubitem key={subitem.id} item={subitem} />
           ))}
         </List>
       </Collapse>
@@ -62,12 +62,12 @@ const SidenavItem = ({ item, child }) => {
     <>
       <ListItem button onClick={() => onClickItem(item)}>
         <ListItemText
-          primary={item.name}
-          className={`${child && classes.itemChild} ${classes.primary} ${
+          primary={item.title}
+          className={`${isSubitem && classes.subitem} ${classes.primary} ${
             (isSelected || hasChildItemSelected) && 'selected'
           }`}
         />
-        {expandIconChild(item)}
+        {expandIcon(item)}
       </ListItem>
       {collapseList(item)}
     </>

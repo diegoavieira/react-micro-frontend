@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { makeStyles, Drawer, List } from '@material-ui/core';
+import { makeStyles, Drawer, List, ListSubheader } from '@material-ui/core';
 import SidenavItem from './SidenavItem';
 
 const useStyles = makeStyles((theme) => ({
@@ -15,8 +15,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Sidenav = (props) => {
-  const { items, drawerOpen, isMobile, toogleDrawer, drawerWidth } = props;
+const Sidenav = ({ itemsList, drawerOpen, isMobile, toogleDrawer, drawerWidth }) => {
   const classes = useStyles({ drawerWidth });
   const [drawerVariant, setDrawerVariant] = useState('persistent');
 
@@ -33,11 +32,11 @@ const Sidenav = (props) => {
         onClose={toogleDrawer}
         classes={{ paper: classes.drawerPaper }}
       >
-        <List disablePadding>
-          {items.map((item) => (
-            <SidenavItem key={item.name} item={item} />
-          ))}
-        </List>
+        {itemsList.map((itemList) => (
+          <List key={itemList.id} disablePadding subheader={<ListSubheader>{itemList.name}</ListSubheader>}>
+            {itemList.items && itemList.items.map((item) => <SidenavItem key={item.id} item={item} />)}
+          </List>
+        ))}
       </Drawer>
     </nav>
   );

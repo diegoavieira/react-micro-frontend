@@ -35,36 +35,65 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const sidenavItems = [
+const sidenavItemsList = [
   {
-    name: 'Home',
-    path: '/'
-  },
-  {
-    name: 'Create',
-    path: '/create'
-  },
-  {
-    name: 'Children',
-    path: '/children',
-    children: [
+    id: 1,
+    name: '',
+    items: [
       {
-        name: 'Child',
-        path: '/child'
+        id: 1,
+        title: 'Home',
+        path: '/'
       }
     ]
   },
   {
-    name: 'Children 2',
-    path: '/children2',
-    children: [
+    id: 2,
+    name: 'Subtitle',
+    items: [
       {
-        name: 'Child 2',
-        path: '/child2'
+        id: 1,
+        title: 'Children',
+        subitems: [
+          {
+            id: 1,
+            title: 'Child',
+            path: '/child'
+          }
+        ]
       },
       {
-        name: 'Child 3',
-        path: '/child3'
+        id: 2,
+        title: 'Children 2',
+        subitems: [
+          {
+            id: 1,
+            title: 'Child 2',
+            path: '/child2'
+          },
+          {
+            id: 2,
+            title: 'Child 3',
+            path: '/child3'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: 3,
+    name: 'Subtitle 2',
+    items: [
+      {
+        id: 1,
+        title: 'Children 4',
+        subitems: [
+          {
+            id: 1,
+            title: 'Child 4',
+            path: '/child4'
+          }
+        ]
       }
     ]
   }
@@ -89,7 +118,7 @@ const Layout = ({ children }) => {
       <TopToolbar toogleDrawer={toogleDrawer} />
       <main className={classes.main}>
         <Sidenav
-          items={sidenavItems}
+          itemsList={sidenavItemsList}
           drawerOpen={drawerOpen}
           isMobile={isMobile}
           toogleDrawer={toogleDrawer}
