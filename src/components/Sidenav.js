@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { makeStyles, Drawer, List, ListSubheader } from '@material-ui/core';
-import SidenavItem from './SidenavItem';
+import { makeStyles, Drawer } from '@material-ui/core';
+import SidenavList from './SidenavList';
 
 const useStyles = makeStyles((theme) => ({
   drawer: {
@@ -32,11 +32,12 @@ const Sidenav = ({ itemsList, drawerOpen, isMobile, toogleDrawer, drawerWidth })
         onClose={toogleDrawer}
         classes={{ paper: classes.drawerPaper }}
       >
-        {itemsList.map((itemList) => (
+        {/* {itemsList.map((itemList) => (
           <List key={itemList.id} disablePadding subheader={<ListSubheader>{itemList.name}</ListSubheader>}>
             {itemList.items && itemList.items.map((item) => <SidenavItem key={item.id} item={item} />)}
           </List>
-        ))}
+        ))} */}
+        <SidenavList itemsList={itemsList} />
       </Drawer>
     </nav>
   );

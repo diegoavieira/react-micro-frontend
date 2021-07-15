@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
 const sidenavItemsList = [
   {
     id: 1,
-    name: '',
+    subtitle: '',
     items: [
       {
         id: 1,
@@ -49,32 +49,38 @@ const sidenavItemsList = [
   },
   {
     id: 2,
-    name: 'Subtitle',
+    subtitle: 'Subtitle',
     items: [
       {
         id: 1,
-        title: 'Children',
-        subitems: [
+        title: 'Subitems 1',
+        items: [
           {
             id: 1,
-            title: 'Child',
-            path: '/child'
+            title: 'Subitem 11',
+            path: '/subitem1'
           }
         ]
       },
       {
         id: 2,
-        title: 'Children 2',
-        subitems: [
+        title: 'Subitems 2',
+        items: [
           {
             id: 1,
-            title: 'Child 2',
-            path: '/child2'
+            title: 'Subitem 21',
+            path: '/subitem21'
           },
           {
             id: 2,
-            title: 'Child 3',
-            path: '/child3'
+            title: 'Subitem 22',
+            items: [
+              {
+                id: 1,
+                title: 'Subitem 21',
+                path: '/subitem21'
+              }
+            ]
           }
         ]
       }
@@ -82,16 +88,16 @@ const sidenavItemsList = [
   },
   {
     id: 3,
-    name: 'Subtitle 2',
+    subtitle: 'Subitems 3',
     items: [
       {
         id: 1,
-        title: 'Children 4',
-        subitems: [
+        title: 'Subitem 31',
+        items: [
           {
             id: 1,
-            title: 'Child 4',
-            path: '/child4'
+            title: 'Subitem 31',
+            path: '/subitem31'
           }
         ]
       }
