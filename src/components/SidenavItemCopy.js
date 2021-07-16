@@ -16,21 +16,19 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const SidenavItemCopy = ({ item, hasSub, expanded, isSub }) => {
+const SidenavItemCopy = ({ item, hasSub, expanded, isSub, onClickItem }) => {
   const classes = useStyles();
   const location = useLocation();
 
-  const isSelected = item.path === location.pathname;
+  const itemSelected = item.path === location.pathname;
 
-  const onClickItem = () => {
-    console.log(item.path);
-  };
+  const subitemSelected = !!(hasSub && item.items.filter((subitem) => subitem.path === location.pathname).length);
 
   return (
-    <ListItem button onClick={() => onClickItem()}>
+    <ListItem button onClick={() => onClickItem(item.path, isSub)}>
       <ListItemText
         primary={item.title}
-        className={`${isSub && classes.subitem} ${classes.primary} ${isSelected && 'selected'}`}
+        className={`${isSub && classes.subitem} ${classes.primary} ${(itemSelected || subitemSelected) && 'selected'}`}
       />
       {hasSub && (expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />)}
     </ListItem>

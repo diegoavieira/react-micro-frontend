@@ -32,11 +32,6 @@ const Sidenav = ({ itemsList, drawerOpen, isMobile, toogleDrawer, drawerWidth })
         onClose={toogleDrawer}
         classes={{ paper: classes.drawerPaper }}
       >
-        {/* {itemsList.map((itemList) => (
-          <List key={itemList.id} disablePadding subheader={<ListSubheader>{itemList.name}</ListSubheader>}>
-            {itemList.items && itemList.items.map((item) => <SidenavItem key={item.id} item={item} />)}
-          </List>
-        ))} */}
         <SidenavList itemsList={itemsList} />
       </Drawer>
     </nav>

@@ -7,6 +7,7 @@ import {
   withStyles
 } from '@material-ui/core';
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import SidenavItemCopy from './SidenavItemCopy';
 
 const Accordion = withStyles({
@@ -51,6 +52,8 @@ const AccordionDetails = withStyles({
 })(MuiAccordionDetails);
 
 const SidenavList = ({ itemsList }) => {
+  const history = useHistory();
+
   const [expanded, setExpanded] = useState(false);
 
   const onChangeItem = (expandedId) => (event, isExpanded) => {
@@ -58,6 +61,11 @@ const SidenavList = ({ itemsList }) => {
   };
 
   const expandedId = (itemListId, itemId) => `${itemListId}-${itemId}`;
+
+  const onClickItem = (path, isSub) => {
+    if (!isSub) setExpanded(false);
+    if (path) history.push(path);
+  };
 
   return (
     <>
@@ -72,16 +80,21 @@ const SidenavList = ({ itemsList }) => {
                 onChange={onChangeItem(expandedId(itemList.id, item.id))}
               >
                 <AccordionSummary>
-                  <SidenavItemCopy hasSub expanded={expanded === expandedId(itemList.id, item.id)} item={item} />
+                  <SidenavItemCopy
+                    onClickItem={onClickItem}
+                    hasSub
+                    expanded={expanded === expandedId(itemList.id, item.id)}
+                    item={item}
+                  />
                 </AccordionSummary>
                 <AccordionDetails>
                   {item.items.map((subitem) => (
-                    <SidenavItemCopy isSub key={subitem.id} item={subitem} />
+                    <SidenavItemCopy onClickItem={onClickItem} isSub key={subitem.id} item={subitem} />
                   ))}
                 </AccordionDetails>
               </Accordion>
             ) : (
-              <SidenavItemCopy key={item.id} item={item} />
+              <SidenavItemCopy onClickItem={onClickItem} key={item.id} item={item} />
             )
           )}
         </List>
