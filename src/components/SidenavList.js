@@ -15,13 +15,13 @@ const Accordion = withStyles({
     boxShadow: 'none',
     '&:not(:last-child)': {
       borderBottom: 0
+    },
+    '&:before': {
+      display: 'none'
+    },
+    '&$expanded': {
+      margin: 'auto'
     }
-    // '&:before': {
-    //   display: 'none'
-    // },
-    // '&$expanded': {
-    //   margin: 'auto'
-    // }
   },
   expanded: {}
 })(MuiAccordion);
