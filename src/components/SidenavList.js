@@ -7,8 +7,8 @@ import {
   withStyles
 } from '@material-ui/core';
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import SidenavItemCopy from './SidenavItemCopy';
+import { useHistory, useLocation } from 'react-router-dom';
+import SidenavItem from './SidenavItem';
 
 const Accordion = withStyles({
   root: {
@@ -53,6 +53,11 @@ const AccordionDetails = withStyles({
 
 const SidenavList = ({ itemsList }) => {
   const history = useHistory();
+  const location = useLocation();
+
+  const itemSelected = (item) => item.path === location.pathname;
+  const subitemSelected = (item) =>
+    !!(item.items && item.items.filter((subitem) => subitem.path === location.pathname).length);
 
   const [expanded, setExpanded] = useState(false);
 
@@ -76,25 +81,32 @@ const SidenavList = ({ itemsList }) => {
               <Accordion
                 key={item.id}
                 square
-                expanded={expanded === expandedId(itemList.id, item.id)}
+                expanded={expanded === expandedId(itemList.id, item.id) || subitemSelected(item)}
                 onChange={onChangeItem(expandedId(itemList.id, item.id))}
               >
                 <AccordionSummary>
-                  <SidenavItemCopy
+                  <SidenavItem
                     onClickItem={onClickItem}
                     hasSub
-                    expanded={expanded === expandedId(itemList.id, item.id)}
+                    expanded={expanded === expandedId(itemList.id, item.id) || subitemSelected(item)}
                     item={item}
+                    selected={subitemSelected(item)}
                   />
                 </AccordionSummary>
                 <AccordionDetails>
                   {item.items.map((subitem) => (
-                    <SidenavItemCopy onClickItem={onClickItem} isSub key={subitem.id} item={subitem} />
+                    <SidenavItem
+                      selected={itemSelected(subitem)}
+                      onClickItem={onClickItem}
+                      isSub
+                      key={subitem.id}
+                      item={subitem}
+                    />
                   ))}
                 </AccordionDetails>
               </Accordion>
             ) : (
-              <SidenavItemCopy onClickItem={onClickItem} key={item.id} item={item} />
+              <SidenavItem selected={itemSelected(item)} onClickItem={onClickItem} key={item.id} item={item} />
             )
           )}
         </List>

@@ -1,12 +1,18 @@
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@material-ui/core';
-import { purple } from '@material-ui/core/colors';
 import Home from './pages/Home';
 import Layout from './components/Layout';
 
 const theme = createTheme({
   palette: {
-    primary: purple
+    primary: {
+      main: '#004d40',
+      light: '#80cbc4'
+    },
+    secondary: {
+      main: '#4db6ac',
+      light: '#99d5cf'
+    }
     // type: 'dark'
   }
 });
