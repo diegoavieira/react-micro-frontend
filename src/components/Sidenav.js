@@ -9,8 +9,10 @@ const useStyles = makeStyles((theme) => ({
   drawerPaper: {
     width: ({ drawerWidth }) => drawerWidth,
     top: 64,
+    height: 'calc(100% - 64px)',
     [theme.breakpoints.down('sm')]: {
-      top: 0
+      top: 0,
+      height: '100%'
     }
   }
 }));
@@ -19,9 +21,7 @@ const Sidenav = ({ itemsList, drawerOpen, isMobile, toogleDrawer, drawerWidth })
   const classes = useStyles({ drawerWidth });
   const [drawerVariant, setDrawerVariant] = useState('persistent');
 
-  useEffect(() => {
-    setDrawerVariant(isMobile ? 'temporary' : 'persistent');
-  });
+  useEffect(() => setDrawerVariant(isMobile ? 'temporary' : 'persistent'));
 
   return (
     <nav>

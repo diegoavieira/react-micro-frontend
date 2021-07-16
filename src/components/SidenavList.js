@@ -15,13 +15,13 @@ const Accordion = withStyles({
     boxShadow: 'none',
     '&:not(:last-child)': {
       borderBottom: 0
-    },
-    '&:before': {
-      display: 'none'
-    },
-    '&$expanded': {
-      margin: 'auto'
     }
+    // '&:before': {
+    //   display: 'none'
+    // },
+    // '&$expanded': {
+    //   margin: 'auto'
+    // }
   },
   expanded: {}
 })(MuiAccordion);
@@ -61,9 +61,7 @@ const SidenavList = ({ itemsList }) => {
 
   const [expanded, setExpanded] = useState(false);
 
-  const onChangeItem = (expandedId) => (event, isExpanded) => {
-    setExpanded(isExpanded ? expandedId : false);
-  };
+  const onChangeItem = (expandedId) => (event, isExpanded) => setExpanded(isExpanded ? expandedId : false);
 
   const expandedId = (itemListId, itemId) => `${itemListId}-${itemId}`;
 

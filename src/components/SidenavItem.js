@@ -16,9 +16,6 @@ const useStyles = makeStyles((theme) => ({
       background: theme.palette.primary.light
     }
   },
-  subitem: {
-    paddingLeft: theme.spacing(2)
-  },
   icon: {
     color: theme.palette.text.secondary,
     '&.selected': {

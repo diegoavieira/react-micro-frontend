@@ -1,4 +1,4 @@
-import { makeStyles, useTheme, useMediaQuery } from '@material-ui/core';
+import { makeStyles, useTheme, useMediaQuery, CssBaseline } from '@material-ui/core';
 import React, { useState, useEffect } from 'react';
 import Sidenav from './Sidenav';
 import TopToolbar from './TopToolbar';
@@ -124,7 +124,10 @@ const Layout = ({ children }) => {
           toogleDrawer={toogleDrawer}
           drawerWidth={drawerWidth}
         />
-        <section className={`${classes.section} ${!isMobile && !drawerOpen && 'drawer-closed'}`}>{children}</section>
+        <section className={`${classes.section} ${!isMobile && !drawerOpen && 'drawer-closed'}`}>
+          <CssBaseline />
+          {children}
+        </section>
       </main>
     </>
   );
