@@ -56,6 +56,7 @@ const SidenavList = ({ itemsList }) => {
   const location = useLocation();
 
   const itemSelected = (item) => item.path === location.pathname;
+
   const subitemSelected = (item) =>
     !!(item.items && item.items.filter((subitem) => subitem.path === location.pathname).length);
 
