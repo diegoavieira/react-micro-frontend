@@ -74,13 +74,7 @@ const sidenavItemsList = [
           {
             id: 2,
             title: 'Subitem 22',
-            items: [
-              {
-                id: 1,
-                title: 'Subitem 21',
-                path: '/subitem21'
-              }
-            ]
+            path: '/subitem22'
           }
         ]
       }
@@ -96,7 +90,7 @@ const sidenavItemsList = [
         items: [
           {
             id: 1,
-            title: 'Subitem 31',
+            title: 'Subitem 331',
             path: '/subitem31'
           }
         ]
