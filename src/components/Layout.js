@@ -1,5 +1,6 @@
 import { makeStyles, useTheme, useMediaQuery, CssBaseline } from '@material-ui/core';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import useLocalStorage from '../hooks/useLocalStorage';
 import Sidenav from './Sidenav';
 import TopToolbar from './TopToolbar';
 
@@ -35,82 +36,18 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const sidenavItemsList = [
-  {
-    id: 1,
-    subtitle: '',
-    items: [
-      {
-        id: 1,
-        title: 'Home',
-        path: '/'
-      }
-    ]
-  },
-  {
-    id: 2,
-    subtitle: 'Subtitle',
-    items: [
-      {
-        id: 1,
-        title: 'Subitems 1',
-        items: [
-          {
-            id: 1,
-            title: 'Subitem 11',
-            path: '/subitem1'
-          }
-        ]
-      },
-      {
-        id: 2,
-        title: 'Subitems 2',
-        items: [
-          {
-            id: 1,
-            title: 'Subitem 21',
-            path: '/subitem21'
-          },
-          {
-            id: 2,
-            title: 'Subitem 22',
-            path: '/subitem22'
-          }
-        ]
-      }
-    ]
-  },
-  {
-    id: 3,
-    subtitle: 'Subitems 3',
-    items: [
-      {
-        id: 1,
-        title: 'Subitem 31',
-        items: [
-          {
-            id: 1,
-            title: 'Subitem 331',
-            path: '/subitem31'
-          }
-        ]
-      }
-    ]
-  }
-];
-
-const Layout = ({ children }) => {
+const Layout = ({ children, sidenavItems }) => {
   const classes = useStyles();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const [drawerOpen, setDrawerOpen] = useState(true);
+  const [drawerOpen, setDrawerOpen] = useLocalStorage('drawerOpen', true);
 
   const toogleDrawer = () => {
     setDrawerOpen(!drawerOpen);
   };
 
   useEffect(() => {
-    setDrawerOpen(!isMobile);
+    if (isMobile) setDrawerOpen(!isMobile);
   }, [isMobile]);
 
   return (
@@ -118,7 +55,7 @@ const Layout = ({ children }) => {
       <TopToolbar toogleDrawer={toogleDrawer} />
       <main className={classes.main}>
         <Sidenav
-          itemsList={sidenavItemsList}
+          itemsList={sidenavItems}
           drawerOpen={drawerOpen}
           isMobile={isMobile}
           toogleDrawer={toogleDrawer}

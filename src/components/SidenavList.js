@@ -6,8 +6,9 @@ import {
   ListSubheader,
   withStyles
 } from '@material-ui/core';
-import React, { useState } from 'react';
+import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
+import useLocalStorage from '../hooks/useLocalStorage';
 import SidenavItem from './SidenavItem';
 
 const Accordion = withStyles({
@@ -60,14 +61,14 @@ const SidenavList = ({ itemsList }) => {
   const subitemSelected = (item) =>
     !!(item.items && item.items.filter((subitem) => subitem.path === location.pathname).length);
 
-  const [expanded, setExpanded] = useState(false);
+  const [itemExpanded, setItemExpanded] = useLocalStorage('itemExpanded', false);
 
-  const onChangeItem = (expandedId) => (event, isExpanded) => setExpanded(isExpanded ? expandedId : false);
+  const onChangeItem = (expandedId) => (event, isExpanded) => setItemExpanded(isExpanded ? expandedId : false);
 
   const expandedId = (itemListId, itemId) => `${itemListId}-${itemId}`;
 
   const onClickItem = (path, isSub) => {
-    if (!isSub) setExpanded(false);
+    if (!isSub) setItemExpanded(false);
     if (path) history.push(path);
   };
 
@@ -80,14 +81,14 @@ const SidenavList = ({ itemsList }) => {
               <Accordion
                 key={item.id}
                 square
-                expanded={expanded === expandedId(itemList.id, item.id) || subitemSelected(item)}
+                expanded={itemExpanded === expandedId(itemList.id, item.id)}
                 onChange={onChangeItem(expandedId(itemList.id, item.id))}
               >
                 <AccordionSummary>
                   <SidenavItem
                     onClickItem={onClickItem}
                     hasSub
-                    expanded={expanded === expandedId(itemList.id, item.id) || subitemSelected(item)}
+                    expanded={itemExpanded === expandedId(itemList.id, item.id)}
                     item={item}
                     selected={subitemSelected(item)}
                   />

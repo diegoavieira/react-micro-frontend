@@ -17,10 +17,74 @@ const theme = createTheme({
   }
 });
 
+const sidenavItems = [
+  {
+    id: 1,
+    subtitle: '',
+    items: [
+      {
+        id: 1,
+        title: 'Home',
+        path: '/'
+      }
+    ]
+  },
+  {
+    id: 2,
+    subtitle: 'Subtitle',
+    items: [
+      {
+        id: 1,
+        title: 'Subitems 1',
+        items: [
+          {
+            id: 1,
+            title: 'Subitem 11',
+            path: '/subitem1'
+          }
+        ]
+      },
+      {
+        id: 2,
+        title: 'Subitems 2',
+        items: [
+          {
+            id: 1,
+            title: 'Subitem 21',
+            path: '/subitem21'
+          },
+          {
+            id: 2,
+            title: 'Subitem 22',
+            path: '/subitem22'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: 3,
+    subtitle: 'Subitems 3',
+    items: [
+      {
+        id: 1,
+        title: 'Subitem 31',
+        items: [
+          {
+            id: 1,
+            title: 'Subitem 331',
+            path: '/subitem31'
+          }
+        ]
+      }
+    ]
+  }
+];
+
 const App = () => (
   <ThemeProvider theme={theme}>
     <Router>
-      <Layout>
+      <Layout sidenavItems={sidenavItems}>
         <Switch>
           <Route exact path="/">
             <Home />
