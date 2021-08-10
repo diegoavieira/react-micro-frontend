@@ -1,10 +1,33 @@
-import React from 'react';
-import { Typography } from '@material-ui/core';
+import React, { useEffect } from 'react';
+import useFetch from '../hooks/useFetch';
+import useFilter from '../hooks/useFilter';
+import TablePaged from './TablePaged';
 
-const Home = () => (
-  <Typography variant="h6" component="h2" color="textSecondary" gutterBottom>
-    Home
-  </Typography>
-);
+const Home = () => {
+  // eslint-disable-next-line no-unused-vars
+  const [filter, setFilter, onPageChange, onSizeChange] = useFilter({ page: 0, size: 5 });
+  const [response, setUrl] = useFetch(
+    `https://api.instantwebtools.net/v1/passenger?page=${filter.page}&size=${filter.size}`
+  );
+
+  useEffect(() => {
+    setUrl(`https://api.instantwebtools.net/v1/passenger?page=${filter.page}&size=${filter.size}`);
+  }, [filter]);
+
+  return (
+    <div>
+      <TablePaged
+        promise={{ ...response, data: response.data && response.data.data }}
+        pagination={{
+          total: response.data && response.data.totalPassengers,
+          page: filter.page,
+          size: filter.size,
+          onPageChange,
+          onSizeChange
+        }}
+      />
+    </div>
+  );
+};
 
 export default Home;
