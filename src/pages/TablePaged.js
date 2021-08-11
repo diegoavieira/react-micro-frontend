@@ -17,7 +17,6 @@ const TablePaged = ({ toast, promise, pagination }) => {
   const { page, size, total, onPageChange, onSizeChange } = pagination;
 
   useEffect(() => {
-    console.log(notFound);
     if (notFound) toast.warning('warning');
   }, [notFound]);
 

@@ -10,7 +10,7 @@ const Home = () => {
   const [response, setUrl] = useFetch.get();
 
   useEffect(() => {
-    setUrl(`https://api.instantwebtools.net/v1/passenger?page=${filter.page}&size=${filter.size}`);
+    setUrl(`https://api.instantwebtools.net/v1/passengers?page=${filter.page}&size=${filter.size}`);
   }, [filter]);
 
   return (

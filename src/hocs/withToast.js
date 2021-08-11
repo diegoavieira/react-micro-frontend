@@ -1,40 +1,69 @@
-import React, { useState } from 'react';
-import { Snackbar, Slide } from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
+import { makeStyles, Snackbar, Slide } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 
-const withToast = (WrappedComponent) => (props) => {
-  const [toast, setToast] = useState({ open: false, message: '', type: 'success' });
+const useStyles = makeStyles(() => ({
+  root: {
+    width: '360px'
+  }
+}));
 
-  const show = {
-    success: (message) => setToast({ open: true, message, type: 'success' }),
-    info: (message) => setToast({ open: true, message, type: 'info' }),
-    warning: (message) => setToast({ open: true, message, type: 'warning' }),
-    error: (message) => setToast({ open: true, message, type: 'error' })
+const withToast = (WrappedComponent) => (props) => {
+  const classes = useStyles();
+  const [toasts, setToasts] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [toast, setToast] = useState(null);
+
+  useEffect(() => {
+    if (toasts.length && !toast) {
+      setToast({ ...toasts[0] });
+      setToasts((prev) => prev.slice(1));
+      setOpen(true);
+    } else if (toasts.length && toast && open) {
+      setOpen(false);
+    }
+  }, [toasts, toast, open]);
+
+  const createToasts = (message, severity) => {
+    setToasts((prev) => [...prev, { message, severity, key: new Date().getTime() }]);
   };
 
-  const close = (event, reason) => {
+  const show = {
+    success: (message) => createToasts(message, 'success'),
+    info: (message) => createToasts(message, 'info'),
+    warning: (message) => createToasts(message, 'warning'),
+    error: (message) => createToasts(message, 'error')
+  };
+
+  const onClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
     }
 
-    setToast({ ...toast, open: false });
+    setOpen(false);
+  };
+
+  const onExited = () => {
+    setToast(null);
   };
 
   return (
     <>
       <WrappedComponent {...props} toast={show} />
       <Snackbar
+        key={toast ? toast.key : null}
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'right'
         }}
-        autoHideDuration={4000}
-        open={toast.open}
-        onClose={close}
+        autoHideDuration={3000}
+        open={open}
+        onClose={onClose}
         TransitionComponent={Slide}
+        TransitionProps={{ onExited }}
       >
-        <Alert onClose={close} severity={toast.type}>
-          {toast.message}
+        <Alert className={classes.root} onClose={onClose} severity={toast ? toast.severity : null}>
+          {toast ? toast.message : null}
         </Alert>
       </Snackbar>
     </>
