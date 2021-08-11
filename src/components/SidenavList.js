@@ -56,16 +56,14 @@ const SidenavList = ({ itemsList }) => {
   const history = useHistory();
   const location = useLocation();
 
-  const itemSelected = (item) => item.path === location.pathname;
+  const itemSelected = (item) => item.path.replace('/', '') === location.pathname.split('/')[1];
 
-  const subitemSelected = (item) =>
-    !!(item.items && item.items.filter((subitem) => subitem.path === location.pathname).length);
+  const subitemSelected = (item) => !!(item.items && item.items.filter((subitem) => itemSelected(subitem)).length);
 
   const [itemExpanded, setItemExpanded] = useLocalStorage('itemExpanded', false);
 
-  const onChangeItem = (expandedId) => (event, isExpanded) => setItemExpanded(isExpanded ? expandedId : false);
-
   const expandedId = (itemListId, itemId) => `${itemListId}-${itemId}`;
+  const onChangeItem = (idExpanded) => (event, isExpanded) => setItemExpanded(isExpanded ? idExpanded : false);
 
   const onClickItem = (path, isSub) => {
     if (!isSub) setItemExpanded(false);

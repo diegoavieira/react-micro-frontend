@@ -9,11 +9,17 @@ import {
   TableBody,
   TablePagination
 } from '@material-ui/core';
-import React from 'react';
+import React, { useEffect } from 'react';
+import withToast from '../hocs/withToast';
 
-const TablePaged = ({ promise, pagination }) => {
+const TablePaged = ({ toast, promise, pagination }) => {
   const { loading, data, notFound } = promise;
   const { page, size, total, onPageChange, onSizeChange } = pagination;
+
+  useEffect(() => {
+    console.log(notFound);
+    if (notFound) toast.warning('warning');
+  }, [notFound]);
 
   return (
     <Paper>
@@ -55,4 +61,4 @@ const TablePaged = ({ promise, pagination }) => {
     </Paper>
   );
 };
-export default TablePaged;
+export default withToast(TablePaged);

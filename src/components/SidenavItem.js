@@ -34,7 +34,7 @@ const SidenavItem = ({ item, hasSub, expanded, isSub, onClickItem, selected }) =
       className={`${classes.root} ${isSub && 'subitem'} ${selected && 'selected'}`}
     >
       <ListItemText>
-        <Typography variant="button" component="span" color={selected ? 'primary' : 'textSecondary'}>
+        <Typography variant="button" component="span" color={selected ? 'primary' : 'textPrimary'}>
           {item.title}
         </Typography>
       </ListItemText>
