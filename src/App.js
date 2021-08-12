@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@material-ui/core';
 import Home from './pages/Home';
+import Create from './pages/Create';
 import Layout from './components/Layout';
 
 const theme = createTheme({
@@ -89,9 +90,9 @@ const App = () => (
           <Route exact path="/">
             <Home />
           </Route>
-          {/* <Route path="/create">
-          <Create />
-        </Route> */}
+          <Route path="/create">
+            <Create />
+          </Route>
         </Switch>
       </Layout>
     </Router>

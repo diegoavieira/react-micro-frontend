@@ -1,13 +1,15 @@
+import { Button } from '@material-ui/core';
 import React, { useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import withToast from '../hocs/withToast';
 import useFetch from '../hooks/useFetch';
 import useFilter from '../hooks/useFilter';
 import TablePaged from './TablePaged';
 
 const Home = () => {
-  // eslint-disable-next-line no-unused-vars
-  const [filter, setFilter, onPageChange, onSizeChange] = useFilter({ page: 0, size: 5 });
+  const [filter, , onPageChange, onSizeChange] = useFilter({ page: 0, size: 5 });
   const [response, setUrl] = useFetch.get();
+  const history = useHistory();
 
   useEffect(() => {
     setUrl(`https://api.instantwebtools.net/v1/passengers?page=${filter.page}&size=${filter.size}`);
@@ -15,6 +17,7 @@ const Home = () => {
 
   return (
     <div>
+      <Button onClick={() => history.push('/create')}>Create</Button>
       <TablePaged
         promise={{ ...response, data: response.data && response.data.data }}
         pagination={{
