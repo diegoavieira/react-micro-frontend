@@ -7,18 +7,18 @@ const validation = (validate, value) => {
 
   switch (rule.check) {
     case 'required':
-      return { check: rule.check, valid: !!value, message: rule.message || 'Required!' };
+      return { check: rule.check, valid: !!value, message: rule.message || 'Campo obrigatório' };
     case 'minLength':
       return {
         check: rule.check,
         valid: !!(value && +rule.value <= value.length),
-        message: rule.message || `Min length is ${rule.value}.`
+        message: rule.message || `Mínimo ${rule.value} caracteres`
       };
     case 'email':
       return {
         check: rule.check,
         valid: /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(value),
-        message: rule.message || 'Invalid format.'
+        message: rule.message || 'Formato inválido'
       };
     default:
       return { valid: true };
@@ -86,12 +86,17 @@ const useForm = (fields) => {
     }
   };
 
+  const fill = (newValues) => {
+    setValues({ ...values, ...newValues });
+    setErrors(initErrors);
+  };
+
   const reset = () => {
     setValues(initValues);
     setErrors(initErrors);
   };
 
-  return { values, setValues, errors, invalid, onChange, onBlur, onSubmit, reset };
+  return { values, errors, invalid, onChange, onBlur, onSubmit, fill, reset };
 };
 
 export default useForm;
