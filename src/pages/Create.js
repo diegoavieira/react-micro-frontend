@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Button, makeStyles, TextField } from '@material-ui/core';
 import withToast from '../hocs/withToast';
 import useForm from '../hooks/useForm';
@@ -14,7 +14,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const fields = {
-  name: ['asd', ['required', 'minLength=5']],
+  name: ['', ['required', 'minLength=5']],
   email: ['', ['required', { check: 'email', message: 'Email invalid' }]]
 };
 
@@ -22,16 +22,14 @@ const Create = () => {
   const classes = useStyles();
   const form = useForm(fields);
 
-  useEffect(() => {
-    if (form.submitted) {
-      console.log('valuess', form.values);
-      // form.onReset();
-    }
-  }, [form]);
+  const onSubmit = (values) => {
+    console.log(values);
+    form.reset();
+  };
 
   return (
     <div className={classes.create}>
-      <form noValidate autoComplete="off" onSubmit={form.onSubmit}>
+      <form noValidate autoComplete="off" onSubmit={form.onSubmit(onSubmit)}>
         <TextField
           className={classes.fieldHeight}
           variant="filled"
@@ -60,9 +58,9 @@ const Create = () => {
           error={form.errors.email.invalid}
           helperText={form.errors.email.required || form.errors.email.email}
         />
-        <Button disabled={form.invalid} type="submit">
-          Submit
-        </Button>
+        <Button type="submit">Submit</Button>
+        <Button onClick={form.reset}>Reset</Button>
+        <Button onClick={() => form.setValues({ ...form.values, name: 'uhusss' })}>Set</Button>
       </form>
     </div>
   );

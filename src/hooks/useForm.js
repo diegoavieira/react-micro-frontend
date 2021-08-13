@@ -33,78 +33,65 @@ const useForm = (fields) => {
   const [values, setValues] = useState(initValues);
   const [errors, setErrors] = useState(initErrors);
   const [invalid, setInvalid] = useState(true);
-  const [submitted, setSubmitted] = useState(false);
 
   const fieldErrors = (name, value) => {
     const validates = fields[name][1];
 
     if (validates && validates.length) {
-      validates.forEach((validate) => {
-        const checkValid = validation(validate, value);
+      return validates
+        .map((validate) => {
+          const checkValid = validation(validate, value);
 
-        if (!checkValid.valid) {
-          errors[name] = { ...errors[name], invalid: true, [checkValid.check]: checkValid.message };
-        }
-      });
+          if (!checkValid.valid) {
+            return { invalid: true, [checkValid.check]: checkValid.message };
+          }
+
+          return { invalid: false };
+        })
+        .reduce((prev, curr) => ({ ...prev, [name]: { ...prev[name], ...curr } }), {});
     }
 
-    return errors;
+    return initErrors;
   };
 
   useEffect(() => {
-    Object.keys(values).forEach((key) => {
-      const validates = fields[key][1];
-
-      setInvalid(!!(validates && validates.length));
-
-      if (values[key]) {
-        setErrors({ ...fieldErrors(key, values[key]) });
-      }
-    });
-  }, []);
-
-  useEffect(() => {
-    setSubmitted(false);
-  }, [submitted]);
+    const hasErrors = fieldsKeys.filter((key) => fieldErrors(key, values[key])[key].invalid);
+    setInvalid(!!hasErrors.length);
+  }, [values]);
 
   const onChange = (event) => {
     const { name, value } = event.target;
     setValues({ ...values, [name]: value });
     setErrors({ ...errors, [name]: initErrors[name] });
-    console.log(errors);
   };
 
   const onBlur = (event) => {
     const { name, value } = event.target;
-    console.log(fieldErrors(name, value));
+    setErrors({ ...errors, ...fieldErrors(name, value) });
   };
 
-  const onSubmit = (event) => {
+  const onSubmit = (submit) => (event) => {
     event.preventDefault();
-    // Object.keys(values).forEach((key) => setFieldErrors(key, values[key]));
-    setSubmitted(true);
+
+    if (invalid) {
+      const newErrors = {};
+
+      fieldsKeys.forEach((key) => {
+        newErrors[key] = fieldErrors(key, values[key])[key];
+      });
+
+      setErrors(newErrors);
+    } else {
+      submit(values);
+    }
   };
 
-  const onReset = () => {
+  const reset = () => {
     setValues(initValues);
     setErrors(initErrors);
-    setSubmitted(false);
   };
 
-  useEffect(() => {
-    // Object.keys(values).forEach((key) => {
-    //   console.log(key);
-    //   const validates = fields[key][1];
-    //   setInvalid(!!(validates && validates.length));
-    //   // if (values[key]) {
-    //   //   setFieldErrors(key, values[key]);
-    //   // }
-    // });
-    // const hasError = Object.keys(errors).filter((key) => errors[key].invalid);
-    // setInvalid(!!hasError.length);
-  }, [invalid]);
-
-  return { values, errors, invalid, submitted, onChange, onBlur, onSubmit, onReset };
+  return { values, setValues, errors, invalid, onChange, onBlur, onSubmit, reset };
 };
 
 export default useForm;
