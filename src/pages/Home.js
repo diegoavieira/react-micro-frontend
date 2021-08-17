@@ -7,18 +7,28 @@ import useFilter from '../hooks/useFilter';
 import TablePaged from '../components/TablePaged';
 
 const Home = () => {
-  const [filter, , onPageChange, onSizeChange] = useFilter({ page: 1, size: 5 });
+  const [filter, , onPageChange, onSizeChange] = useFilter({ page: 0, size: 5 });
   const [response, setUrl] = useFetch.get();
   const history = useHistory();
-  const [selected] = useState([]);
+  const [selectedId, setSelectedId] = useState('');
 
   useEffect(() => {
-    setUrl(`https://jsonplaceholder.typicode.com/photos?_page=${filter.page}&_limit=${filter.size}`);
+    console.log(filter);
+    setUrl(`https://jsonplaceholder.typicode.com/photos?_page=${filter.page + 1}&_limit=${filter.size}`);
   }, [filter]);
+
+  const onClick = (row) => {
+    if (selectedId === row.id) {
+      setSelectedId('');
+    } else {
+      setSelectedId(row.id);
+    }
+  };
 
   return (
     <div>
       <Button onClick={() => history.push('/create')}>Create</Button>
+      <p>{selectedId}</p>
       <TablePaged
         promise={{ ...response, data: response.data }}
         pagination={{
@@ -28,7 +38,10 @@ const Home = () => {
           onPageChange,
           onSizeChange
         }}
-        selected={selected}
+        onClick={onClick}
+        isSelect
+        selectedId={selectedId}
+        selectedIdAttr="id"
       />
     </div>
   );

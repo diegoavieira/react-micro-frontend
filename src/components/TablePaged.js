@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import {
   TableContainer,
   Paper,
@@ -10,37 +9,16 @@ import {
   TablePagination,
   Checkbox
 } from '@material-ui/core';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import withToast from '../hocs/withToast';
 
-const TablePaged = ({ toast, promise, pagination, selected }) => {
+const TablePaged = ({ toast, promise, pagination, onClick, isSelect, selectedId, selectedIdAttr }) => {
   const { loading, data, notFound } = promise;
   const { page, size, total, onPageChange, onSizeChange } = pagination;
-
-  const [rowSelected, setRowSelected] = useState([]);
 
   useEffect(() => {
     if (notFound) toast.warning('warning');
   }, [notFound]);
-
-  const handleClick = (event, name) => {
-    const selectedIndex = rowSelected.indexOf(name);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(rowSelected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(rowSelected.slice(1));
-    } else if (selectedIndex === rowSelected.length - 1) {
-      newSelected = newSelected.concat(rowSelected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(rowSelected.slice(0, selectedIndex), rowSelected.slice(selectedIndex + 1));
-    }
-
-    setRowSelected(newSelected);
-  };
-
-  const isSelected = (id) => rowSelected.indexOf(id) !== -1;
 
   return (
     <Paper>
@@ -51,21 +29,17 @@ const TablePaged = ({ toast, promise, pagination, selected }) => {
             <Table>
               <TableHead>
                 <TableRow>
-                  {selected && (
-                    <TableCell padding="checkbox">
-                      {/* {multiple && (<Checkbox checked={isSelected(row.id)} />)} */}
-                    </TableCell>
-                  )}
+                  {isSelect && <TableCell padding="checkbox" />}
                   <TableCell>ID</TableCell>
                   <TableCell>Name</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {data.map((row) => (
-                  <TableRow hover key={row.id} onClick={(event) => handleClick(event, row.id)}>
-                    {selected && (
+                  <TableRow hover key={row.id} onClick={onClick && (() => onClick(row))}>
+                    {isSelect && (
                       <TableCell padding="checkbox">
-                        <Checkbox checked={isSelected(row.id)} />
+                        <Checkbox checked={selectedId === row[selectedIdAttr]} />
                       </TableCell>
                     )}
                     <TableCell component="th" scope="row">
